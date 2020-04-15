@@ -1,7 +1,13 @@
 <?php
-class ErrorMain{
+
+class ErrorMain extends Controller {
+
     function __construct(){
-        echo "<p>Error al cargar recurso</p>";
+        parent::__construct();
+        $this->view->message = "Error al cargar el recurso";
+        $this->view->render('/error/index');
     }
+
 }
+
 ?>

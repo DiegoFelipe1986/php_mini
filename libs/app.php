@@ -1,25 +1,31 @@
 <?php
 require_once 'controllers/error.php';
 
-class App{
-   function __construct(){
-		echo "<p>Nueva App</p>";
-		// Getting Url
-		$url = $_GET['url'];
+class App
+{
+	function __construct()
+	{
+
+		$url = isset($_GET['url']) ? $_GET['url'] : null;
 		$url = rtrim($url, '/');
-		// Control about URL parameters
 		$url = explode('/', $url);
-		$fileController = 'controllers/'. $url[0]. '.php';
-		// var_dump($fileController);
-		if(file_exists($fileController)){
+		if (empty($url[0])) {
+			$fileController = 'controllers/main.php';
+			require_once $fileController;
+			$controller = new Main();
+			return false;
+		}
+
+		$fileController = 'controllers/' . $url[0] . '.php';
+
+		if (file_exists($fileController)) {
 			require_once $fileController;
 			$controller = new $url[0];
-			if(isset($url[1])){
+			if (isset($url[1])) {
 				$controller->{$url[1]}();
 			}
 		} else {
 			$controller = new ErrorMain();
 		}
-   }
+	}
 }
-?>
